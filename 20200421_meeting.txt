@@ -1,0 +1,47 @@
+gan 학습
+
+케라스 / 텐서프로
+
+mnist - d - 글자
+g - z - d - 글자
+abnormal/normal mnist - d - 0 or 1
+
+gan 학습 이후 D + MNIST
+- MNIST에 노이즈를 주거나 줄을 치거나
+- test, train 나눈 후 구별자에서 분류 & 분포 그래프
+- 정상/ (정상+ 비정상) 정확도
+
+- MNIST 같은 이미지인지 여부
+- 우리가 쓰는 건 GAN/DCGAN/WGAN 모델 전체가 아니고 내부의 Discriminator network 이용
+- nvidia 참고해볼 것
+
+DCGAN을 보완한 것이 WGAN
+- Generator에서 나온 건 무조건 1로 인식되는 위험 방지
+
+이상탐지 != 이상영역탐지
+- 우리가 하는 것은 이상탐지
+- 이상탐지: 이상 여부 확인
+- 이상영역탐지: 이상을 나타내는 영역 확인
+
+단계 1 많은 시도 필요(이상탐지)
+단계 2 결과(이상영역탐지)
+-------------------------------------리서치 (DCGAN, WGAN)
+단계 3 응용 (X-Ray)
+단계 4 패키징 (VGG16)
+
+test_x = train_x[:1000]
+gan.D.predict(test_x)
+test_x[1000 : x] = anomal_train_x[:]
+레이블링, accuracy
+
+anomal_train_x = np.ones((1000, 28, 28))
+anomal_train_x = train_x[:1000]
+anomal_train_x[:, 15, :] = 255 #(낙서)
+
+- 낙서 코드 다양하게 해 보기
+
+
+***
+tensorflow / keras
+코드 한번에 구별할 수 있을 만큼 코드 익숙해지기
+***
