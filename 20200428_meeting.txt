@@ -1,0 +1,20 @@
+Step 2_practice (week3)
+
+[모델]
+ruined mnist - [U-net] -> normal mnist -> [Discriminator] => 1 
+: 훼손시킨 mnist를 U-net에 넣고 원본 mnist로 나올 수 있도록 학습시키고 Discriminator에서 1 출력
+
+
+이번 주는 ruined mnist - [U-net] -> normal mnist 과정만 먼저 실습
+여기서 [U-net]은 훼손된 부분을 삭제하는 코드가 됨
+
+* 이미지 사이즈 문제
+* 입출력 변경 관련
+* U-net 학습
+- U-net은 보통 큰 사이즈의 이미지를 사용
+- 작은 사이즈를 위해서 입출력을 바꾸는 게 필요
+
+- 일주일 지연됨(x-ray 전처리가 다음 단계로)
+
+
+U-net의 반은 CNN과 마찬가지이므로 참고할 것
