@@ -1,0 +1,31 @@
+- week4 과제
+1) Ruined -> U-Net -> Normal
+2) Ruined -> U-Net -> Normal -> DCGAN Discriminator -> True / False
+
+
+<week5>
+- 골절(훼손)과 비골절
+ : 골절과 비골절 사진이 쌍을 이루는 경우가 드물어서 비정상 부분 탐지가 어려움
+
+- box labelling은 가장 알려진 방법이나 labelling이 단점
+: Lung Image Segmentation이 대표적인 사례(골절부위 찾아내서 labelling 하는 것)
+
+
+x1	-> %2 -> y1
+  + -> z  
+x2	-> %3 -> y2
+
+y1, y2 값과 학습된 %2, %3만 존재하고 z가 없는 경우 = > 전체 모델을 만든 후 네트워크 한 곳을 fix
+
+
+골절 -> U-Net -> 비골절(無) -> Discriminator(fixed) -> True / False
+* U-Net input으로 골절과 비골절 모두 사용해볼 것임
+* GAN에서는 비골절 이미지를 input으로
+
+- loss function은 학습이 진행되는 방향을 가리킴
+def custom_loss():
+	return r1*c_output + r2*d_output + r3*keras.mean(mse(input, generated))
+	# c_output 0: normal, 1: fracture // 골절, 비골절 여부
+	# d_output 0: real, 1: fake // 진짜 X-ray이어야 함
+	# mse(s, g): 입력한 이미지가 최대한 똑같아야 함 mse(s-g) // 입력한 이미지와 유사한 정도가 아니라 최대한 똑같을 때까지
+	# r1, r2, r3 중요도에 따라 비율을 다르게 정함(경험적, 첫 시도는 1:1:1로 시작할 것)

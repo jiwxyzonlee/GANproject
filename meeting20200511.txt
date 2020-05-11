@@ -1,0 +1,78 @@
+# 해야 할 일
+'''
+코끝 레이블링 하기
+crop 하는 코딩
+wgan 학습시키기 - MNIST 참고
+https://github.com/dhrim/bmac_seminar/blob/master/material/wgan_mnist.ipynb
+
+classifier 학습시키기
+whole model 코딩
+	functional API 사용해서
+'''
+
+
+# Functional API 예시
+x = Dense(64, activation='relu')(inputs)
+x = Dense(64, activation='relu')(x)
+predictions = Dense(10, activation='softmax')(x)
+# 출력이 다시 입력이 됨
+
+model.save("....h5")
+model = ....
+
+
+# 기본 골격은 이러했으나
+# s - U - g - D -> 0
+# gan_d = keras.models.load_model("xxxx.h5")
+
+# 현재 진행 중인 프로젝트는 discriminator D 외에도 추가로 C 학습이 필요함
+s - unet - generated  - C (0: normal / 1: fracture)
+		    - D (0: real / 1: fake)
+
+
+
+# 모델 코드 대략적인 예시
+# GANs 모델에 discriminator(d) 외에 따로 classifier(c) 추가하여 학습시킨 후 모델 저장
+c = load_model("classifier.h5")
+d = load_model("gan_d.h5")
+
+u = unet()
+input = ....
+
+generated= u(input)
+
+d_output = d(generated)
+	# 0 : real, 1: fake
+
+c_output = c(generated)
+	# 0 : normal, 1: fracture
+
+# 전체 모델
+whole_model = Model([input], [d_output, c_output])
+
+
+def custom_loss():
+	return r1*c_output + r2*d_output + r3*keras.mean(mse(input, generated))
+	# c_output 0: normal, 1: fracture
+	# d_output 0: real, 1: fake
+	# mse(s, g): 입력한 이미지가 최대한 똑같아야 함 mse(s-g)
+	# r1, r2, r3 중요도에 따라 비율을 다르게 정함(경험적, 첫 시도는 1:1:1로 시작할 것)
+
+
+whole_model.fit(train_x, 0, loss=custom_loss)
+
+
+# 내장된 mse 함수도 보통 이러한 모양임
+def mse():
+	.....
+	return ...
+
+model.fit(x, y, loss=tf.keras.loss.mse)
+# 만들어 쓸 custom_loss 도 유사한 형태임
+
+
+
+
+
+
+
